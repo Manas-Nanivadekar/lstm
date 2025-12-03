@@ -42,3 +42,25 @@ class LSTM(nn.Module):
         h_t = o_t * torch.tanh(c_t)
 
         return h_t, c_t
+
+# smoke test
+input_size = 10
+hidden_size = 20
+batch_size = 3
+
+lstm_cell = LSTM(input_size, hidden_size)
+
+h_0 = torch.zeros(batch_size, hidden_size)
+c_0 = torch.zeros(batch_size, hidden_size)
+
+sequence_length = 5
+x_sequence = torch.randn(sequence_length, batch_size, input_size)
+
+h_t, c_t = h_0, c_0
+for t in range(sequence_length):
+    x_t = x_sequence[t]
+    h_t, c_t = lstm_cell(x_t, h_t, c_t)
+    print(f"Timestep {t}: h_t shape = {h_t.shape}, c_t shape = {c_t.shape}")
+
+print(f"\nFinal hidden state: {h_t.shape}")
+print(f"Final cell state: {c_t.shape}")
